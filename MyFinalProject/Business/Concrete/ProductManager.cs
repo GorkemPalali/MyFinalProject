@@ -1,7 +1,6 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
-using Entities.Concrete;
-using DataAccess.Concrete.InMemory;
+using Entity.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ namespace Business.Concrete
 {
     public class ProductManager : IProductService
     {
-        IProductDal _productDal;
+        IProductDal _productDal;// Constructor Injection
 
         public ProductManager(IProductDal productDal)
         {
@@ -21,13 +20,18 @@ namespace Business.Concrete
 
         public List<Product> GetAll()
         {
-            //....
-            //KOŞULLAR
-            //...
+            
+            return _productDal.GetAll();
+        }
 
+        public List<Product> GetAllByCategoryId(int id)
+        {
+            return _productDal.GetAll(p => p.CategoryID == id);
+        }
 
-            //Koşullar doğruysa aşağıdaki veriyi döndür
-           return _productDal.GetAll();
+        public List<Product> GetByUnitPrice(decimal min, decimal max)
+        {
+            return _productDal.GetAll(p=>p.UnitPrice >= min && p.UnitPrice <= max);
         }
     }
 }
